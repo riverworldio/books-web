@@ -1,0 +1,126 @@
+.sideNav-container {
+  width: 15vw;
+  font-size: 14px;
+  height: 100vh;
+  /* overflow-y: scroll; */
+  padding: 30px 15px;
+  background-color: #bcbeff1a;
+  transition: all 0.3s ease;
+}
+
+/* scrollbar customization */
+/* .sideNav-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sideNav-container::-webkit-scrollbar-track {
+  background-color: #bcbeff1a;
+}
+
+.sideNav-container::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+} */
+
+.sideNav-container.collapsed {
+  width: 4vw;
+  transition: all 0.3s ease;
+}
+
+.sideNav-container .top-container-sideNav .sideNav-logo {
+  font-size: 20px;
+}
+
+.sideNav-container.collapsed .top-container-sideNav .sideNav-logo {
+  font-size: 0px;
+}
+
+.top-container-sideNav {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.sideNavbar-Label {
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.sideNav-container .nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 0px;
+  cursor: pointer;
+}
+
+.sideNav-container .nav-button:hover,
+.sideNav-container .nav-button.activeNav-Button {
+  cursor: pointer;
+  background-color: #444cf71a;
+  border-radius: 5px;
+}
+
+.sideNav-container.collapsed .nav-button:hover {
+  background-color: transparent;
+}
+
+.sideNav-container.collapsed .nav-button.activeNav-Button {
+  cursor: pointer;
+  background-color: #444cf71a;
+  border-radius: 5px;
+}
+
+.sideNav-container.collapsed .nav-button .icon-sideNav {
+  font-size: 18px;
+  padding: 2px 0px;
+  transition: all 0.3s ease;
+}
+
+.sideNav-container.collapsed .nav-button .sideNavbar-Label,
+.sideNav-container.collapsed .nav-button .arrow-container {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.sideNavbar-Label {
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.arrow-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+  transition: all 0.3s ease;
+}
+
+.sideNav-container.collapsed .drop-down-Content {
+  display: none;
+}
+
+.drop-down-Content {
+  display: flex;
+  flex-direction: column;
+  padding-left: 24px;
+  transition: all 0.3s ease;
+}
+
+.drop-down-Content li {
+  font-size: 14px;
+  list-style: none;
+  padding: 5px 0;
+  transition: all 0.3s ease;
+}
+/* collapsed sidebar nav hover */
+.sideNav-container.collapsed .nav-button:hover .sideNavbar-Label {
+  display: inline-block;
+  white-space: nowrap;
+  background-color: #bcbeff1a;
+  padding: 5px 10px 5px 4px;
+  border-radius: 0px 6px 6px 0px;
+  margin-left: 18px;
+  z-index: 10;
+  transition: all 0.3s ease;
+}

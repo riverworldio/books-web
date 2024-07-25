@@ -1,0 +1,4 @@
+.children-container{
+    flex-grow: 1;
+    transition: width 0.3s ease;
+}
