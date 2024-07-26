@@ -1,10 +1,11 @@
 import React from 'react';
 
-const TextTypo = ({ text, fontSize = '16px', fontWeight = 'normal', textAlign = 'left' }) => {
+const TextTypo = ({ text, fontSize = '16px', fontWeight = 'normal', textAlign = 'left', fontColor = 'black' }) => {
   const style = {
     fontSize: fontSize,
     fontWeight: fontWeight,
     textAlign: textAlign,
+    color: fontColor,
   };
 
   return (

@@ -1,5 +1,7 @@
 .children-container{
     flex-grow: 1;
     transition: width 0.3s ease;
-    margin: 25px;
+    padding: 25px;
+    height: 100vh;
+    overflow-y: scroll;
 }

@@ -57,6 +57,7 @@
 
 .sideNav-container .nav-button:hover,
 .sideNav-container .nav-button.activeNav-Button {
+  font-weight: 600;
   cursor: pointer;
   background-color: #444cf71a;
   border-radius: 5px;
