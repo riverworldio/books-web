@@ -10,6 +10,7 @@ import {
 } from "react-icons/md";
 import NavButton from "../../NavButton/NavButton";
 import { RiMenu2Line } from "react-icons/ri";
+import { NavLink } from "react-router-dom";
 
 const SideNav = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -21,7 +22,9 @@ const SideNav = () => {
   return (
     <div className={`sideNav-container ${isCollapsed ? "collapsed" : ""}`}>
       <div className="top-container-sideNav">
-        <h6 className="sideNav-logo">FinBooks</h6>
+        <NavLink to="/">
+          <h6 className="sideNav-logo">FinBooks</h6>
+        </NavLink>
         {isCollapsed ? (
           <RiMenu2Line size={26} onClick={toggleCollapse} />
         ) : (
