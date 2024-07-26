@@ -1,21 +1,17 @@
-import React from "react";
-import { GoSearch } from "react-icons/go";
-import "./SearchInput.css";
+import React from 'react';
+import { FaSearch } from 'react-icons/fa';
+import './SearchInput.css'; 
 
-const SearchInput = () => {
+const SearchInput = ({ placeholder, onChange }) => {
   return (
-    <div className="my-3">
+    <div className="search-container">
+      <FaSearch className="search-icon" />
       <input
         type="text"
-        placeholder="Search..."
-        name="searchinput"
-        className="search-box-icon1"
-        // value={searchInput}
-        // onChange={(e) => setSearchInput(e.target.value)}
+        className="search-input"
+        placeholder={placeholder}
+        onChange={onChange}
       />
-      <button type="submit" className="search-icon">
-        <GoSearch size={22} />
-      </button>
     </div>
   );
 };

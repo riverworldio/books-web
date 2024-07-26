@@ -68,9 +68,7 @@
 }
 
 .sideNav-container.collapsed .nav-button.activeNav-Button {
-  cursor: pointer;
-  background-color: #444cf71a;
-  border-radius: 5px;
+  background-color: transparent;
 }
 
 .sideNav-container.collapsed .nav-button .icon-sideNav {
