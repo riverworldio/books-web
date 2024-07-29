@@ -1,7 +1,7 @@
 .children-container{
     flex-grow: 1;
     transition: width 0.3s ease;
-    padding: 25px;
+    padding: 30px;
     height: 100vh;
     overflow-y: scroll;
 }

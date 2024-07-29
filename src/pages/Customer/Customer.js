@@ -1,11 +1,13 @@
 import React from "react";
-import MainLayout from "../../components/Layouts/MainLayout/MainLayout";
-import TextTypo from "../../components/TextTypo/TextTypo";
-import FlexContainer from "../../components/Flexbox/FlexContainer";
-import TextBtn from "../../components/Buttons/TextBtn/TextBtn";
-import FilledBtn from "../../components/Buttons/FilledBtn/FilledBtn";
-import CustomerTable from "../../components/CustomerTable/CustomerTable";
-import SearchInput from "../../components/SearchInput/SearchInput";
+import {
+  MainLayout,
+  TextTypo,
+  FlexContainer,
+  TextBtn,
+  FilledBtn,
+  SearchInput,
+  CustomerTable
+} from "../../components";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 
 const Customer = () => {

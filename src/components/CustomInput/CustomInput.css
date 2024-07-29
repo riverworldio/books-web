@@ -1,0 +1,41 @@
+.custominput-Label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.custominput-inputFeild {
+  font-size: 15px;
+  height: 40px;
+  font-weight: 400;
+}
+
+.custominput-inputFeild.box {
+  border: 0.75px solid #00000080;
+  border-radius: 4px;
+}
+
+.custominput-inputFeild.standard {
+  border: none;
+  border-bottom: 1px solid #09080880;
+  border-radius: 0;
+}
+
+.custominput-inputFeild.standard:focus {
+  border: none;
+  border-bottom: 2px solid #09080880;
+  border-radius: 0;
+  outline: none;
+}
+
+.custominput-inputFeild.box:focus {
+  font-size: 15px;
+  font-weight: 400;
+  border: 2px solid #09080880;
+  border-radius: 6px;
+  outline: none;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 2px;
+}

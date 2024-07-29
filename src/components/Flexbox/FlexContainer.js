@@ -9,6 +9,7 @@ const FlexContainer = ({
   gap = "10px",
   padding = "0",
   margin = "0",
+  width = "",
 }) => {
   const style = {
     display: "flex",
@@ -19,6 +20,7 @@ const FlexContainer = ({
     gap: gap,
     padding: padding,
     margin: margin,
+    width: width,
   };
 
   return <div style={style}>{children}</div>;

@@ -5,6 +5,7 @@ const TextBtn = ({
   fontSize = "16px",
   fontWeight = "600",
   fontColor = "black",
+  padding= '7px 30px',
   ...props
 }) => {
   const style = {
@@ -13,7 +14,7 @@ const TextBtn = ({
     color: fontColor,
     backgroundColor: "transparent",
     border: 'none',
-    padding: '7px 30px',
+    padding: padding,
     cursor: 'pointer',
   };
 

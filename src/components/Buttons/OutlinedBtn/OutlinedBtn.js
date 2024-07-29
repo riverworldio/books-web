@@ -5,6 +5,7 @@ const OutlinedBtn = ({
   fontSize = "16px",
   fontWeight = "600",
   fontColor = "black",
+  margin = "0px",
   ...props
 }) => {
   const style = {
@@ -12,18 +13,20 @@ const OutlinedBtn = ({
     fontWeight: fontWeight,
     color: fontColor,
     backgroundColor: "transparent",
-    border: '1px solid #333',
-    padding: '7px 30px',
-    borderRadius: '10px',
-    cursor: 'pointer',
+    border: "1px solid #333",
+    padding: "7px 30px",
+    borderRadius: "10px",
+    margin: margin,
+    cursor: "pointer",
   };
 
   return (
     <div>
-      <button style={style} {...props}>{text}</button>
+      <button style={style} {...props}>
+        {text}
+      </button>
     </div>
   );
 };
 
 export default OutlinedBtn;
-
