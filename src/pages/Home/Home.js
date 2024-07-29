@@ -1,7 +1,6 @@
 import React from "react";
-import MainLayout from "../../components/Layouts/MainLayout/MainLayout";
 import "./Home.css";
-import TextTypo from "../../components/TextTypo/TextTypo";
+import { MainLayout, TextTypo } from "../../components";
 
 const Home = () => {
   return (

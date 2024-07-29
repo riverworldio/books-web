@@ -1,11 +1,13 @@
 import React from "react";
-import MainLayout from "../../components/Layouts/MainLayout/MainLayout";
-import TextIcon from "../../components/TextTypo/TextIcon";
-import TextTypo from "../../components/TextTypo/TextTypo";
-import FlexContainer from "../../components/Flexbox/FlexContainer";
-import FilledBtn from "../../components/Buttons/FilledBtn/FilledBtn";
-import SearchInput from "../../components/SearchInput/SearchInput";
-import BorderStyled from "../../components/Border/BorderStyled";
+import {
+  MainLayout,
+  TextTypo,
+  FlexContainer,
+  BorderStyled,
+  TextIcon,
+  FilledBtn,
+  SearchInput,
+} from "../../components";
 import { FiBarChart2 } from "react-icons/fi";
 
 const Reports = () => {
@@ -13,15 +15,12 @@ const Reports = () => {
     <MainLayout>
       <FlexContainer>
         <TextTypo text="Reports" fontSize="25px" fontWeight="400" />
-        <FlexContainer>
-          <FilledBtn
-            text="Add"
-            fontSize="13px"
-            fontColor="white"
-            bgColor="#6EA152"
-          />
-          <SearchInput />
-        </FlexContainer>
+        <FilledBtn
+          text="Add new"
+          fontSize="13px"
+          fontColor="white"
+          bgColor="#6EA152"
+        />
       </FlexContainer>
       <TextTypo
         text="General Reports"
@@ -29,6 +28,7 @@ const Reports = () => {
         fontWeight="400"
         margin="30px 0px 20px 0px"
       />
+      <SearchInput />
       <FlexContainer direction="column">
         <TextIcon fontSize="18px" fontColor="#009ED8">
           <FiBarChart2 /> Profit and Loss

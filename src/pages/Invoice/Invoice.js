@@ -1,11 +1,14 @@
 import React from "react";
-import MainLayout from "../../components/Layouts/MainLayout/MainLayout";
-import TextTypo from "../../components/TextTypo/TextTypo";
-import FlexContainer from "../../components/Flexbox/FlexContainer";
-import TextBtn from "../../components/Buttons/TextBtn/TextBtn";
-import FilledBtn from "../../components/Buttons/FilledBtn/FilledBtn";
-import InvoiceTable from "../../components/InvoiceTable/InvoiceTable";
-import SearchInput from "../../components/SearchInput/SearchInput";
+import { NavLink } from "react-router-dom";
+import {
+  FlexContainer,
+  FilledBtn,
+  MainLayout,
+  InvoiceTable,
+  SearchInput,
+  TextTypo,
+  TextBtn,
+} from "../../components";
 
 const Invoice = () => {
   return (
@@ -18,12 +21,14 @@ const Invoice = () => {
             fontSize="13px"
             fontColor="#0076BE"
           />
-          <FilledBtn
-            text="Add new"
-            fontSize="13px"
-            fontColor="white"
-            bgColor="#6EA152"
-          />
+          <NavLink to="/newInvoice">
+            <FilledBtn
+              text="Add new"
+              fontSize="13px"
+              fontColor="white"
+              bgColor="#6EA152"
+            />
+          </NavLink>
           <FilledBtn text="Import" fontSize="13px" />
           <FilledBtn text="Export" fontSize="13px" />
         </FlexContainer>
@@ -42,8 +47,8 @@ const Invoice = () => {
           <TextTypo text="In Draft" fontSize="13px" textAlign="center" />
         </FlexContainer>
       </FlexContainer>
-      <SearchInput/>
-      <InvoiceTable/>
+      <SearchInput />
+      <InvoiceTable />
     </MainLayout>
   );
 };

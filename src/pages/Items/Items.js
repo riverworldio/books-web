@@ -1,9 +1,11 @@
 import React from "react";
-import MainLayout from "../../components/Layouts/MainLayout/MainLayout";
-import TextTypo from "../../components/TextTypo/TextTypo";
-import FlexContainer from "../../components/Flexbox/FlexContainer";
-import TextBtn from "../../components/Buttons/TextBtn/TextBtn";
-import FilledBtn from "../../components/Buttons/FilledBtn/FilledBtn";
+import {
+  MainLayout,
+  TextTypo,
+  FlexContainer,
+  TextBtn,
+  FilledBtn,
+} from "../../components";
 
 const Items = () => {
   return (

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const BorderStyled = ({ borderColor = 'black', margin = '0px', borderStyle = 'dashed' ,borderWidth = "100%"}) => {
+const BorderStyled = ({ borderColor = 'black', margin = '0px', borderStyle = 'dashed' ,borderWidth = "100%", borderHeight = "2px"}) => {
   const style = {
     border: 'none',
-    borderTop: `2px ${borderStyle} ${borderColor}`,
+    borderTop: `${borderHeight} ${borderStyle} ${borderColor}`,
     margin: margin,
     width:borderWidth,
   };

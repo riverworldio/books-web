@@ -4,7 +4,7 @@ import './SearchInput.css';
 
 const SearchInput = ({ placeholder, onChange }) => {
   return (
-    <div className="search-container">
+    <div className="search-container my-3">
       <FaSearch className="search-icon" />
       <input
         type="text"
