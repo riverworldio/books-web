@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  BorderStyled,
   MainLayout,
   TextTypo,
   CustomInput,
@@ -110,7 +111,7 @@ const NewInvoice = () => {
         </Container>
 
         {/* Sub total box */}
-        {/* <Container
+        <Container
           margin="20px 0px"
           bgColor="#F7F7F7"
           padding="20px"
@@ -120,31 +121,62 @@ const NewInvoice = () => {
             <TextTypo text="Sub Total" />
             <TextTypo text="0.00" />
           </FlexContainer>
-          <FlexContainer>
-            <FlexContainer>
-              <TextTypo text="Discount" />
-              <CustomInput
-                type="text"
-                value={textValue}
-                onChange={(e) => setTextValue(e.target.value)}
-                placeholder="Add Discount+"
-              />
+          <BorderStyled
+            borderWidth="100%"
+            borderStyle="solid"
+            borderColor="black"
+            borderHeight="1px"
+            margin="35px 0px 20px 0px"
+          />
+          <FlexContainer align="center">
+            <FlexContainer align="center" width="30%">
+              <FlexContainer direction="column">
+                <TextTypo text="Discount" margin="0px 0px 15px 0px" />
+                <TextTypo text="Tax" />
+              </FlexContainer>
+              <FlexContainer direction="column">
+                <CustomInput
+                  type="text"
+                  value={textValue}
+                  margin="0px"
+                  onChange={(e) => setTextValue(e.target.value)}
+                  placeholder="Add Discount+"
+                />
+                <CustomInput
+                  type="dropdown"
+                  value={dropdownValue}
+                  margin="0px"
+                  onChange={(e) => setDropdownValue(e.target.value)}
+                  options={dropdownOptions}
+                />
+              </FlexContainer>
             </FlexContainer>
-            <TextTypo text="0.00" />
+            <FlexContainer direction="column">
+              <TextTypo text="0.00" textAlign="right" fontColor="#00000080"/>
+              <TextTypo text="-0.00" textAlign="right" fontColor="#00000080" />
+            </FlexContainer>
           </FlexContainer>
-          <FlexContainer>
-            <FlexContainer>
-              <TextTypo text="Tax" />
+          <BorderStyled
+            borderWidth="100%"
+            borderStyle="solid"
+            borderColor="black"
+            borderHeight="1px"
+            margin="35px 0px 20px 0px"
+          />
+          <FlexContainer align="center">
+            <FlexContainer width="30%" align="center">
+              <TextTypo text="Total" />
               <CustomInput
                 type="dropdown"
                 value={dropdownValue}
+                margin="0px 0px 0px 20px"
                 onChange={(e) => setDropdownValue(e.target.value)}
                 options={dropdownOptions}
               />
             </FlexContainer>
             <TextTypo text="0.00" />
           </FlexContainer>
-        </Container> */}
+        </Container>
 
         {/* Notes */}
         <CustomInput
