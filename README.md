@@ -1,2 +1,2 @@
 # books-web
-GST Invoice application
+GST Invoice application for eWaybill
