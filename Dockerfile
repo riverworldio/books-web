@@ -1,6 +1,6 @@
 ARG nginxVersion=1.23.2
 ARG alpineVersion=3.19
-ARG nodeVersion20
+ARG nodeVersion=20
 
 # build environment
 FROM node:${nodeVersion}-alpine${alpineVersion} as buildStep
