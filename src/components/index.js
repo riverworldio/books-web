@@ -10,6 +10,7 @@ export { default as ImageContainer } from './ImageContainer/ImageContainer';
 export { default as InvoiceTable } from './InvoiceTable/InvoiceTable';
 export { default as MainLayout } from './Layouts/MainLayout/MainLayout';
 export { default as NavButton } from './NavButton/NavButton';
+export { default as NavTabs } from './NavTabs/NavTabs';
 export { default as ProgressBars } from './ProgressBars/ProgressBars';
 export { default as SearchInput } from './SearchInput/SearchInput';
 export { default as Table } from './Table/Table';

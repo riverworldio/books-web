@@ -11,6 +11,8 @@ import Items from "./pages/Items/Items.js";
 import Reports from "./pages/Reports/Reports.js";
 import InvoiceMain from "./pages/Invoice/InvoiceMain.js";
 import NewInvoice from "./pages/Invoice/NewInvoice.js";
+import NewCustomer from "./pages/Customer/NewCustomer.js";
+import InvoicesDetails from "./pages/Invoice/InvoicesDetails.js";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/Sales/Customers" element={<Customer />} />
           <Route path="/Items" element={<Items />} />
           <Route path="/Reports" element={<Reports />} />
+          <Route path="/newCustomer" element={<NewCustomer />} />
+          <Route path="/Invoices/:id" element={<InvoicesDetails />} />
         </Routes>
       </Router>
     </>
