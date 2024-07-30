@@ -11,6 +11,7 @@ import {
   Table,
   OutlinedBtn,
 } from "../../components";
+import { NavLink } from "react-router-dom";
 
 const NewInvoice = () => {
   const [textValue, setTextValue] = useState("");
@@ -152,7 +153,7 @@ const NewInvoice = () => {
               </FlexContainer>
             </FlexContainer>
             <FlexContainer direction="column">
-              <TextTypo text="0.00" textAlign="right" fontColor="#00000080"/>
+              <TextTypo text="0.00" textAlign="right" fontColor="#00000080" />
               <TextTypo text="-0.00" textAlign="right" fontColor="#00000080" />
             </FlexContainer>
           </FlexContainer>
@@ -200,7 +201,9 @@ const NewInvoice = () => {
 
         {/* Buttons bottom */}
         <FlexContainer justify="flex-end" margin="30px 0px">
-          <TextBtn text="Cancel" />
+          <NavLink to="/Sales/Invoices">
+            <TextBtn text="Cancel" />
+          </NavLink>
           <OutlinedBtn text="Save as Draft" />
           <FilledBtn text="Save" bgColor="#0076BE" fontColor="white" />
         </FlexContainer>

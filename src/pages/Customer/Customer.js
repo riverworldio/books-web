@@ -6,9 +6,10 @@ import {
   TextBtn,
   FilledBtn,
   SearchInput,
-  CustomerTable
+  CustomerTable,
 } from "../../components";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
+import { NavLink } from "react-router-dom";
 
 const Customer = () => {
   return (
@@ -16,12 +17,14 @@ const Customer = () => {
       <FlexContainer>
         <TextTypo text="Customer" fontSize="25px" fontWeight="400" />
         <FlexContainer>
-          <FilledBtn
-            text="Add new"
-            fontSize="13px"
-            fontColor="white"
-            bgColor="#6EA152"
-          />
+          <NavLink to="/newCustomer">
+            <FilledBtn
+              text="Add new"
+              fontSize="13px"
+              fontColor="white"
+              bgColor="#6EA152"
+            />
+          </NavLink>
           <TextBtn text={<PiDotsThreeVerticalBold />} />
         </FlexContainer>
       </FlexContainer>

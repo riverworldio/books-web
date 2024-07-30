@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import FilledBtn from "../Buttons/FilledBtn/FilledBtn";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuPenLine } from "react-icons/lu";
+import { NavLink } from "react-router-dom";
 
 function createData(
   id,
@@ -175,13 +176,15 @@ export default function InvoiceTable() {
               <TableCell sx={styleRow}>{row.customerNum}</TableCell>
               <TableCell sx={styleRow}>{row.Amount}</TableCell>
               <TableCell sx={styleRow}>
-                <FilledBtn
-                  text="View"
-                  padding="3px 13px"
-                  fontSize="14px"
-                  fontColor="white"
-                  bgColor="black"
-                />
+                <NavLink to={`/Invoices/${row.id}`}>
+                  <FilledBtn
+                    text="View"
+                    padding="3px 13px"
+                    fontSize="14px"
+                    fontColor="white"
+                    bgColor="black"
+                  />
+                </NavLink>
               </TableCell>
               <TableCell sx={styleRow}>
                 <LuPenLine />
