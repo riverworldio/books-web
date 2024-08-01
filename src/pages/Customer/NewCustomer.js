@@ -24,6 +24,7 @@ const NewCustomer = () => {
   ];
 
   const handleFileChange = (e) => {
+    console.log(fileValue)
     setFileValue(e.target.files[0]);
   };
 
@@ -166,7 +167,7 @@ const NewCustomer = () => {
           />
         </FlexContainer>
         <FlexContainer direction="column" width="100%">
-          <TextTypo text="Billing Address" fontSize="18px" fontWeight="600" />
+          <TextTypo text="Shipping Address" fontSize="18px" fontWeight="600" />
           <CustomInput
             type="checkbox"
             value={checkboxValue}
