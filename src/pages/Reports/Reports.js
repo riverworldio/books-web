@@ -9,6 +9,7 @@ import {
   SearchInput,
 } from "../../components";
 import { FiBarChart2 } from "react-icons/fi";
+import { NavLink } from "react-router-dom";
 
 const Reports = () => {
   return (
@@ -30,9 +31,11 @@ const Reports = () => {
       />
       <SearchInput />
       <FlexContainer direction="column">
-        <TextIcon fontSize="18px" fontColor="#009ED8">
-          <FiBarChart2 /> Profit and Loss
-        </TextIcon>
+        <NavLink to="/ProfitAndLoss">
+          <TextIcon fontSize="18px" fontColor="#009ED8">
+            <FiBarChart2 /> Profit and Loss
+          </TextIcon>
+        </NavLink>
         <BorderStyled borderColor="#00000066" borderWidth="300px" />
         <TextIcon fontSize="18px" fontColor="#009ED8">
           <FiBarChart2 /> Sales by Customer
