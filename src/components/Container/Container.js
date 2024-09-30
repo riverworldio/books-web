@@ -7,6 +7,7 @@ const Container = ({
   width = "100%",
   bgColor = "transparent",
   border = "none",
+  borderRadius="0px",
 }) => {
   const style = {
     margin: margin,
@@ -15,6 +16,7 @@ const Container = ({
     align: "center",
     backgroundColor: bgColor,
     border: border,
+    borderRadius: borderRadius,
   };
 
   return <div style={style}>{children}</div>;
