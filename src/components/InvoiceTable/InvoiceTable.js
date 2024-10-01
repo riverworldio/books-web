@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,81 +10,13 @@ import FilledBtn from "../Buttons/FilledBtn/FilledBtn";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuPenLine } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
-
-function createData(
-  id,
-  dueDate,
-  issueDate,
-  orderNum,
-  status,
-  customerName,
-  customerNum,
-  Amount
-) {
-  return {
-    id,
-    dueDate,
-    issueDate,
-    orderNum,
-    status,
-    customerName,
-    customerNum,
-    Amount,
-  };
-}
-
-const rows = [
-  createData(
-    1,
-    "Due 2 months ago",
-    "13 Feb 2024",
-    348695,
-    "Paid",
-    "Sanjay",
-    "INV-586558",
-    "Rs.6570"
-  ),
-  createData(
-    2,
-    "Due in 15 days",
-    "13 Jul 2024",
-    348345,
-    "Sent",
-    "Karthik",
-    "INV-586558",
-    "Rs.3570"
-  ),
-  createData(
-    3,
-    "Due tommorow",
-    "14 Jan 2024",
-    323419,
-    "Draft",
-    "Sanjay",
-    "INV-586558",
-    "Rs.2570"
-  ),
-  createData(
-    4,
-    "Due tommorow",
-    "14 Jan 2024",
-    376739,
-    "Partial",
-    "Karthik",
-    "INV-584558",
-    "Rs.1570"
-  ),
-  createData(
-    5,
-    "Due tommorow",
-    "14 Jan 2024",
-    356778,
-    "Overdue",
-    "Sanjay",
-    "INV-586558",
-    "Rs.470"
-  ),
-];
+import { useActions } from "../../app/use-Actions";
+import { deleteEntity, fetchEntity } from "../../actions/EntityActions";
+import { useSelector } from "react-redux";
+import { selectEntity } from "../../selectors/EntitySelector";
+import ConfirmationDialog from "../../components/DeletingConfirmation";
+import Pagination from "../Pagination/Pagination";
+import Container from "../Container/Container";
 
 const styleCell = {
   fontSize: "16px",
@@ -139,63 +71,128 @@ const getStatusColor = (status) => {
 };
 
 export default function InvoiceTable() {
+  const { invoice } = useSelector(selectEntity);
+  const [open, setOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const size = 10;
+  const totalPages = Math.ceil((invoice?.data?.total || 0) / size);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const actions = useActions({
+    fetchEntity,
+    deleteEntity,
+  });
+
+  useEffect(() => {
+    const offset = (currentPage - 1) * size;
+    actions.fetchEntity("invoice", `offset=${offset}&size=${size}`);
+  }, [currentPage]);
+
+  const handleDeleteEntities = () => {
+    if (selectedId) {
+      actions.deleteEntity(selectedId, "invoice");
+      setOpen(false);
+    }
+  };
+
+  const handleTrashClose = () => setOpen(false);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const handlePageChange = (page) => setCurrentPage(page);
+
+  const handleOpenDeleteDialog = (id) => {
+    setSelectedId(id);
+    setOpen(true);
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={styleCell}>Due Date</TableCell>
-            <TableCell sx={styleCell}>Issue Date</TableCell>
-            <TableCell sx={styleCell}>Order Num.</TableCell>
-            <TableCell sx={styleCell} align="center">
-              Status
-            </TableCell>
-            <TableCell sx={styleCell}>Name</TableCell>
-            <TableCell sx={styleCell}>Customer ID</TableCell>
-            <TableCell sx={styleCell}>Amount</TableCell>
-            <TableCell sx={styleCell}></TableCell>
-            <TableCell sx={styleCell}></TableCell>
-            <TableCell sx={styleCell}></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row" sx={styleRow}>
-                {row.dueDate}
+    <Container>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {/* <TableCell sx={styleCell}>Due Date</TableCell>
+              <TableCell sx={styleCell}>Issue Date</TableCell>
+              <TableCell sx={styleCell}>Order Num.</TableCell> */}
+              <TableCell sx={styleCell}>Name</TableCell>
+              <TableCell sx={styleCell}>Customer ID</TableCell>
+              <TableCell sx={styleCell}>Amount</TableCell>
+              <TableCell sx={styleCell} align="center">
+                Status
               </TableCell>
-              <TableCell sx={styleRow}>{row.issueDate}</TableCell>
-              <TableCell sx={styleRow}>{row.orderNum}</TableCell>
-              <TableCell sx={styleRow} align="center">
-                {getStatusColor(row.status)}
-              </TableCell>
-              <TableCell sx={styleRow}>{row.customerName}</TableCell>
-              <TableCell sx={styleRow}>{row.customerNum}</TableCell>
-              <TableCell sx={styleRow}>{row.Amount}</TableCell>
-              <TableCell sx={styleRow}>
-                <NavLink to={`/Invoices/${row.id}`}>
-                  <FilledBtn
-                    text="View"
-                    padding="3px 13px"
-                    fontSize="14px"
-                    fontColor="white"
-                    bgColor="black"
-                  />
-                </NavLink>
-              </TableCell>
-              <TableCell sx={styleRow}>
-                <LuPenLine />
-              </TableCell>
-              <TableCell sx={styleRow}>
-                <FaRegTrashAlt />
-              </TableCell>
+              <TableCell sx={styleCell}></TableCell>
+              <TableCell sx={styleCell}></TableCell>
+              <TableCell sx={styleCell}></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {invoice?.data?.data?.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                {/* <TableCell component="th" scope="row" sx={styleRow}>
+                  {row.dueDate}
+                </TableCell>
+                <TableCell sx={styleRow}>{row.issueDate}</TableCell>
+                <TableCell sx={styleRow}>{row.orderNum}</TableCell> */}
+                <TableCell sx={styleRow}>{row.customerName}</TableCell>
+                <TableCell sx={styleRow}>{row.id}</TableCell>
+                <TableCell sx={styleRow}>{row.Amount || "$0.00"}</TableCell>
+                <TableCell sx={styleRow} align="center">
+                  {getStatusColor(row.status || "unknown")}
+                </TableCell>
+                <TableCell sx={styleRow}>
+                  <NavLink to={`/Invoices/${row.id}`}>
+                    <FilledBtn
+                      text="View"
+                      padding="3px 13px"
+                      fontSize="14px"
+                      fontColor="white"
+                      bgColor="black"
+                    />
+                  </NavLink>
+                </TableCell>
+                <TableCell sx={styleRow}>
+                  <LuPenLine />
+                </TableCell>
+                <TableCell sx={styleRow}>
+                  <FaRegTrashAlt
+                    onClick={() => handleOpenDeleteDialog(row.id)}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <ConfirmationDialog
+        isDelete={true}
+        open={open}
+        handleClose={handleTrashClose}
+        handleAgree={handleDeleteEntities}
+        message="This cannot be undone and the item gets deleted permanently."
+      />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+        onPageChange={handlePageChange}
+        totalEntries={invoice?.data?.total}
+        entriesPerPage={size}
+      />
+    </Container>
   );
 }

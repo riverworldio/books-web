@@ -11,30 +11,102 @@ import {
   Table,
   OutlinedBtn,
 } from "../../components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { RxCross1 } from "react-icons/rx";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useActions } from "../../app/use-Actions";
+import { addEntity } from "../../actions/EntityActions";
 
 const NewInvoice = () => {
-  const [textValue, setTextValue] = useState("");
-  const [dropdownValue, setDropdownValue] = useState("");
-  const [dateValue, setDateValue] = useState("");
+  const navigate = useNavigate();
+  const [customerName, setCustomerName] = useState("");
+  const [invoiceDate, setInvoiceDate] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const [terms, setTerms] = useState("");
+  const [salesperson, setSalesperson] = useState("");
+  const [subject, setSubject] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [tax, setTax] = useState("");
+  const [total, setTotal] = useState("");
+  const [notes, setNotes] = useState("");
+  const [advanced, setAdvanced] = useState("");
 
   const dropdownOptions = [
     { value: "option1", label: "Option 1" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
+
   const headers1 = ["Item Table"];
   const headers = ["ITEM TABLE", "QUANTITY", "RATE", "AMOUNT"];
   const rows = [["Type or click to select an item +", "1", "0.00", "0.00"]];
+
+  const actions = useActions({
+    addEntity,
+  });
+
+  const handleSave = async () => {
+    const invoiceData = {
+      customerName,
+      invoiceDate,
+      invoiceNumber,
+      dueDate,
+      orderNumber,
+      terms,
+      salesperson,
+      subject,
+      discount,
+      tax,
+      total,
+      notes,
+      advanced,
+    };
+
+    try {
+      await actions.addEntity(invoiceData, "invoice");
+      setCustomerName("");
+      setInvoiceDate("");
+      setInvoiceNumber("");
+      setDueDate("");
+      setOrderNumber("");
+      setTerms("");
+      setSalesperson("");
+      setSubject("");
+      setDiscount("");
+      setTax("");
+      setTotal("");
+      setNotes("");
+      setAdvanced("");
+      toast.success("Saved successfully!");
+      setTimeout(() => {
+        navigate("/viewInvoices");
+      }, 1000);
+    } catch (error) {
+      toast.error("Failed to save invoice!");
+      console.error("Error saving invoice:", error);
+    }
+  };
+
   return (
     <MainLayout>
-      <TextTypo text="New Invoice" fontSize="30px" fontWeight="400" />
+      <FlexContainer>
+        <TextTypo text="New Invoice" fontSize="30px" fontWeight="400" />
+        <RxCross1
+          color="red"
+          size={30}
+          onClick={() => navigate(-1)}
+          style={{ cursor: "pointer" }}
+        />
+      </FlexContainer>
       <Container margin="30px 0px">
         <CustomInput
           type="text"
           label="Customer Name"
-          value={textValue}
-          onChange={(e) => setTextValue(e.target.value)}
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
           placeholder="Select or add a customer"
           variant="standard"
           required={true}
@@ -43,24 +115,24 @@ const NewInvoice = () => {
           <CustomInput
             type="date"
             label="Invoice Date"
-            value={dateValue}
-            onChange={(e) => setDateValue(e.target.value)}
+            value={invoiceDate}
+            onChange={(e) => setInvoiceDate(e.target.value)}
             width="30%"
             required={true}
           />
           <CustomInput
             type="text"
             label="Invoice Number"
-            value={dateValue}
-            onChange={(e) => setDateValue(e.target.value)}
+            value={invoiceNumber}
+            onChange={(e) => setInvoiceNumber(e.target.value)}
             width="30%"
             required={true}
           />
           <CustomInput
             type="date"
             label="Due Date"
-            value={dateValue}
-            onChange={(e) => setDateValue(e.target.value)}
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
             width="30%"
           />
         </FlexContainer>
@@ -68,23 +140,23 @@ const NewInvoice = () => {
           <CustomInput
             type="text"
             label="Order Number"
-            value={dateValue}
-            onChange={(e) => setDateValue(e.target.value)}
+            value={orderNumber}
+            onChange={(e) => setOrderNumber(e.target.value)}
             width="30%"
           />
           <CustomInput
             type="dropdown"
             label="Terms"
-            value={dropdownValue}
-            onChange={(e) => setDropdownValue(e.target.value)}
+            value={terms}
+            onChange={(e) => setTerms(e.target.value)}
             options={dropdownOptions}
             width="30%"
           />
           <CustomInput
             type="dropdown"
             label="Salesperson"
-            value={dropdownValue}
-            onChange={(e) => setDropdownValue(e.target.value)}
+            value={salesperson}
+            onChange={(e) => setSalesperson(e.target.value)}
             options={dropdownOptions}
             width="30%"
           />
@@ -92,14 +164,13 @@ const NewInvoice = () => {
         <CustomInput
           type="text"
           label="Subject"
-          value={textValue}
-          onChange={(e) => setTextValue(e.target.value)}
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
           placeholder="Let your customer know what this invoice is for"
           variant="standard"
           required={true}
         />
 
-        {/*Item table*/}
         <Container margin="20px 0px">
           <Table headers={headers1} headerFontSize="16px" />
           <Table
@@ -111,7 +182,6 @@ const NewInvoice = () => {
           <OutlinedBtn text="Add Item +" fontSize="12px" margin="10px 0px" />
         </Container>
 
-        {/* Sub total box */}
         <Container
           margin="20px 0px"
           bgColor="#F7F7F7"
@@ -138,16 +208,16 @@ const NewInvoice = () => {
               <FlexContainer direction="column">
                 <CustomInput
                   type="text"
-                  value={textValue}
+                  value={discount}
                   margin="0px"
-                  onChange={(e) => setTextValue(e.target.value)}
+                  onChange={(e) => setDiscount(e.target.value)}
                   placeholder="Add Discount+"
                 />
                 <CustomInput
                   type="dropdown"
-                  value={dropdownValue}
+                  value={tax}
                   margin="0px"
-                  onChange={(e) => setDropdownValue(e.target.value)}
+                  onChange={(e) => setTax(e.target.value)}
                   options={dropdownOptions}
                 />
               </FlexContainer>
@@ -169,9 +239,9 @@ const NewInvoice = () => {
               <TextTypo text="Total" />
               <CustomInput
                 type="dropdown"
-                value={dropdownValue}
+                value={total}
                 margin="0px 0px 0px 20px"
-                onChange={(e) => setDropdownValue(e.target.value)}
+                onChange={(e) => setTotal(e.target.value)}
                 options={dropdownOptions}
               />
             </FlexContainer>
@@ -179,35 +249,38 @@ const NewInvoice = () => {
           </FlexContainer>
         </Container>
 
-        {/* Notes */}
         <CustomInput
           type="text"
           label="Notes"
-          value={textValue}
-          onChange={(e) => setTextValue(e.target.value)}
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
           placeholder="Leave customer notes"
           variant="standard"
         />
 
-        {/* Advanced */}
         <CustomInput
           type="text"
           label="Advanced"
-          value={textValue}
-          onChange={(e) => setTextValue(e.target.value)}
+          value={advanced}
+          onChange={(e) => setAdvanced(e.target.value)}
           placeholder="Here you can select category, add/edit footer or add attachments to your invoice."
           variant="standard"
         />
 
-        {/* Buttons bottom */}
         <FlexContainer justify="flex-end" margin="30px 0px">
           <NavLink to="/Sales/Invoices">
             <TextBtn text="Cancel" />
           </NavLink>
           <OutlinedBtn text="Save as Draft" />
-          <FilledBtn text="Save" bgColor="#0076BE" fontColor="white" />
+          <FilledBtn
+            text="Save"
+            bgColor="#0076BE"
+            fontColor="white"
+            onClick={handleSave}
+          />
         </FlexContainer>
       </Container>
+      <ToastContainer />
     </MainLayout>
   );
 };

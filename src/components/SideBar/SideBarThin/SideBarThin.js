@@ -3,6 +3,8 @@ import "./SideBarThin.css";
 import { IoSearch } from "react-icons/io5";
 import { FaRegBell } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
+import { TbLogout2 } from "react-icons/tb";
+import FlexContainer from "../../Flexbox/FlexContainer";
 
 const SideBarThin = () => {
   return (
@@ -17,6 +19,10 @@ const SideBarThin = () => {
         <FaRegBell size={20} />
         <FiSettings size={20} />
       </div>
+
+      <FlexContainer align="center" justify="end" direction="column" >
+        <TbLogout2 size={20} />
+      </FlexContainer>
     </div>
   );
 };
