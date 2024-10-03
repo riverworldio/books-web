@@ -1,0 +1,12 @@
+.input-borderless {
+  border: none;
+  height: 30px;
+  width: 100%;
+  outline: none;
+  /* background-color: transparent; */
+}
+
+.table-head {
+  font-size: 15px;
+  font-weight: 600;
+}

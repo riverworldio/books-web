@@ -122,9 +122,9 @@ export default function InvoiceTable() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {/* <TableCell sx={styleCell}>Due Date</TableCell>
-              <TableCell sx={styleCell}>Issue Date</TableCell>
-              <TableCell sx={styleCell}>Order Num.</TableCell> */}
+              <TableCell sx={styleCell}>Due Date</TableCell>
+              <TableCell sx={styleCell}>Invoice Date</TableCell>
+              <TableCell sx={styleCell}>Order Num.</TableCell>
               <TableCell sx={styleCell}>Name</TableCell>
               <TableCell sx={styleCell}>Customer ID</TableCell>
               <TableCell sx={styleCell}>Amount</TableCell>
@@ -142,14 +142,14 @@ export default function InvoiceTable() {
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                {/* <TableCell component="th" scope="row" sx={styleRow}>
+                <TableCell component="th" scope="row" sx={styleRow}>
                   {row.dueDate}
                 </TableCell>
-                <TableCell sx={styleRow}>{row.issueDate}</TableCell>
-                <TableCell sx={styleRow}>{row.orderNum}</TableCell> */}
+                <TableCell sx={styleRow}>{row.invoiceDate}</TableCell>
+                <TableCell sx={styleRow}>{row.orderNumber}</TableCell>
                 <TableCell sx={styleRow}>{row.customerName}</TableCell>
-                <TableCell sx={styleRow}>{row.id}</TableCell>
-                <TableCell sx={styleRow}>{row.Amount || "$0.00"}</TableCell>
+                <TableCell sx={styleRow}>{row.invoiceNumber || 0}</TableCell>
+                <TableCell sx={styleRow}>{row.total || "$0.00"}</TableCell>
                 <TableCell sx={styleRow} align="center">
                   {getStatusColor(row.status || "unknown")}
                 </TableCell>
@@ -165,7 +165,9 @@ export default function InvoiceTable() {
                   </NavLink>
                 </TableCell>
                 <TableCell sx={styleRow}>
-                  <LuPenLine />
+                  <NavLink to={`/editInvoice/${row.id}`}>
+                    <LuPenLine />
+                  </NavLink>
                 </TableCell>
                 <TableCell sx={styleRow}>
                   <FaRegTrashAlt
