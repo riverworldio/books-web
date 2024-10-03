@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BorderStyled,
   MainLayout,
@@ -11,15 +11,19 @@ import {
   Table,
   OutlinedBtn,
 } from "../../components";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { RxCross1 } from "react-icons/rx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useActions } from "../../app/use-Actions";
 import { addEntity } from "../../actions/EntityActions";
+import { useActions } from "../../app/use-Actions";
+import EditableTable from "../../components/Table/EditableTable";
+import { useSelector } from "react-redux";
+import { selectEntity } from "../../selectors/EntitySelector";
 
 const NewInvoice = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [customerName, setCustomerName] = useState("");
   const [invoiceDate, setInvoiceDate] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState("");
@@ -33,20 +37,90 @@ const NewInvoice = () => {
   const [total, setTotal] = useState("");
   const [notes, setNotes] = useState("");
   const [advanced, setAdvanced] = useState("");
+  const [subTotal, setSubTotal] = useState(0);
+  const [rows, setRows] = useState([
+    { item: "", quantity: 1, rate: 0, amount: 0 },
+  ]);
+  const { invoice } = useSelector(selectEntity);
 
+  const actions = useActions({
+    addEntity,
+  });
+  const headers1 = ["Item Table"];
   const dropdownOptions = [
     { value: "option1", label: "Option 1" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
 
-  const headers1 = ["Item Table"];
-  const headers = ["ITEM TABLE", "QUANTITY", "RATE", "AMOUNT"];
-  const rows = [["Type or click to select an item +", "1", "0.00", "0.00"]];
+  const taxOptions = [
+    { value: "1%", label: "1%" },
+    { value: "5%", label: "5%" },
+    { value: "18%", label: "18%" },
+  ];
 
-  const actions = useActions({
-    addEntity,
-  });
+  // const currencyOptions = [
+  //   { value: "INR", label: "INR" },
+  //   { value: "USD", label: "USD" },
+  // ];
+
+  useEffect(() => {
+    invoice?.data?.data
+      ?.filter((item) => item.id === id)
+      ?.forEach((invoiceData) => {
+        setCustomerName(invoiceData?.customerName);
+        setInvoiceDate(invoiceData?.invoiceDate);
+        setInvoiceNumber(invoiceData?.invoiceNumber);
+        setDueDate(invoiceData?.dueDate);
+        setOrderNumber(invoiceData?.orderNumber);
+        setTerms(invoiceData?.terms);
+        setSalesperson(invoiceData?.salesperson);
+        setSubject(invoiceData?.subject);
+        setDiscount(invoiceData?.discount);
+        setTax(invoiceData?.tax);
+        setTotal(invoiceData?.total);
+        setNotes(invoiceData?.notes);
+        setAdvanced(invoiceData?.advanced);
+        setRows(invoiceData?.items);
+      });
+  }, [id]);
+
+  const calculateTotal = () => {
+    const subtotal = rows?.reduce(
+      (acc, row) => acc + parseFloat(row?.amount || 0),
+      0
+    );
+    const discountAmount = (subtotal * (parseFloat(discount) || 0)) / 100;
+    const taxAmount =
+      ((subtotal - discountAmount) * (parseFloat(tax) || 0)) / 100;
+    const finalTotal = subtotal - discountAmount + taxAmount;
+
+    setSubTotal(subtotal?.toFixed(2));
+    return finalTotal?.toFixed(2);
+  };
+
+  const updateTotal = () => {
+    const newTotal = calculateTotal();
+    setTotal(newTotal);
+  };
+
+  useEffect(() => {
+    updateTotal();
+  }, [rows, discount, tax]);
+
+  const addRow = (newRow) => {
+    setRows([...rows, newRow]);
+  };
+
+  const updateRow = (index, updatedRow) => {
+    const updatedRows = rows?.map((row, i) => (i === index ? updatedRow : row));
+    setRows(updatedRows);
+  };
+
+  const removeRow = (index) => {
+    const updatedRows = rows?.filter((_, i) => i !== index);
+    setRows(updatedRows);
+  };
 
   const handleSave = async () => {
     const invoiceData = {
@@ -63,24 +137,20 @@ const NewInvoice = () => {
       total,
       notes,
       advanced,
+      items: rows,
     };
-
+    if (id) {
+      invoiceData.id = id;
+    }
     try {
-      await actions.addEntity(invoiceData, "invoice");
-      setCustomerName("");
-      setInvoiceDate("");
-      setInvoiceNumber("");
-      setDueDate("");
-      setOrderNumber("");
-      setTerms("");
-      setSalesperson("");
-      setSubject("");
-      setDiscount("");
-      setTax("");
-      setTotal("");
-      setNotes("");
-      setAdvanced("");
-      toast.success("Saved successfully!");
+      if (id) {
+        await actions.addEntity(invoiceData, "invoice");
+        toast.success("Updated successfully!");
+      } else {
+        await actions.addEntity(invoiceData, "invoice");
+        toast.success("Saved successfully!");
+      }
+
       setTimeout(() => {
         navigate("/viewInvoices");
       }, 1000);
@@ -170,16 +240,16 @@ const NewInvoice = () => {
           variant="standard"
           required={true}
         />
-
         <Container margin="20px 0px">
           <Table headers={headers1} headerFontSize="16px" />
-          <Table
-            headers={headers}
+          <EditableTable
+            tablehead={["#", "ITEM", "QUANTITY", "RATE", "AMOUNT", "ACTIONS"]}
             rows={rows}
-            headerFontSize="14px"
-            cellFontSize="14px"
+            updateRow={updateRow}
+            removeRow={removeRow}
+            addRow={addRow}
+            btnName="+ Add item"
           />
-          <OutlinedBtn text="Add Item +" fontSize="12px" margin="10px 0px" />
         </Container>
 
         <Container
@@ -190,7 +260,7 @@ const NewInvoice = () => {
         >
           <FlexContainer>
             <TextTypo text="Sub Total" />
-            <TextTypo text="0.00" />
+            <TextTypo text={subTotal} />
           </FlexContainer>
           <BorderStyled
             borderWidth="100%"
@@ -211,20 +281,35 @@ const NewInvoice = () => {
                   value={discount}
                   margin="0px"
                   onChange={(e) => setDiscount(e.target.value)}
-                  placeholder="Add Discount+"
+                  placeholder="Add Discount (%)"
                 />
                 <CustomInput
                   type="dropdown"
                   value={tax}
                   margin="0px"
                   onChange={(e) => setTax(e.target.value)}
-                  options={dropdownOptions}
+                  options={taxOptions}
                 />
               </FlexContainer>
             </FlexContainer>
             <FlexContainer direction="column">
-              <TextTypo text="0.00" textAlign="right" fontColor="#00000080" />
-              <TextTypo text="-0.00" textAlign="right" fontColor="#00000080" />
+              <TextTypo
+                text={`-${(
+                  (subTotal * (parseFloat(discount) || 0)) /
+                  100
+                ).toFixed(2)}`}
+                textAlign="right"
+                fontColor="#00000080"
+              />
+              <TextTypo
+                text={`+${(
+                  ((subTotal - (subTotal * (parseFloat(discount) || 0)) / 100) *
+                    (parseFloat(tax) || 0)) /
+                  100
+                ).toFixed(2)}`}
+                textAlign="right"
+                fontColor="#00000080"
+              />
             </FlexContainer>
           </FlexContainer>
           <BorderStyled
@@ -237,15 +322,15 @@ const NewInvoice = () => {
           <FlexContainer align="center">
             <FlexContainer width="30%" align="center">
               <TextTypo text="Total" />
-              <CustomInput
+              {/* <CustomInput
                 type="dropdown"
                 value={total}
                 margin="0px 0px 0px 20px"
                 onChange={(e) => setTotal(e.target.value)}
-                options={dropdownOptions}
-              />
+                options={currencyOptions}
+              /> */}
             </FlexContainer>
-            <TextTypo text="0.00" />
+            <TextTypo text={total} />
           </FlexContainer>
         </Container>
 
@@ -279,8 +364,8 @@ const NewInvoice = () => {
             onClick={handleSave}
           />
         </FlexContainer>
+        <ToastContainer />
       </Container>
-      <ToastContainer />
     </MainLayout>
   );
 };
