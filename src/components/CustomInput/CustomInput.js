@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { TextField, OutlinedInput, InputAdornment } from "@mui/material";
+import { TextField } from "@mui/material";
 
 const CustomInput = ({
   type = "text",
@@ -43,6 +43,17 @@ const CustomInput = ({
           required={required}
         />
       )}
+      {type === "email" && (
+        <input
+          type="email"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`custominput-inputFeild ${variant}`}
+          style={{ padding: "8px", width: "100%", ...props.inputStyle }}
+          required={required}
+        />
+      )}
       {type === "integer" && (
         <input
           type="number"
@@ -55,18 +66,15 @@ const CustomInput = ({
         />
       )}
       {type === "number" && (
-        <FormControl fullWidth sx={{}}>
-          <InputLabel htmlFor="outlined-adornment-amount">
-            {labelText}
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-amount"
-            startAdornment={<InputAdornment position="start">h</InputAdornment>}
-            label="Amount"
-            value={value}
-            onChange={onChange}
-          />
-        </FormControl>
+        <input
+          type="number"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`custominput-inputFeild ${variant}`}
+          style={{ padding: "8px", width: "100%", ...props.inputStyle }}
+          required={required}
+        />
       )}
       {type === "textarea" && (
         <TextField
@@ -108,7 +116,7 @@ const CustomInput = ({
         />
       )}
       {type === "file" && (
-        <input 
+        <input
           type="file"
           onChange={onChange}
           className={`custominput-inputFeild ${variant}`}

@@ -31,6 +31,7 @@ function App() {
           <Route path="/Reports" element={<Reports />} />
           <Route path="/ProfitAndLoss" element={<ProfitAndLoss />} />
           <Route path="/newCustomer" element={<NewCustomer />} />
+          <Route path="/editCustomer/:id" element={<NewCustomer />} />
           <Route path="/Invoices/:id" element={<InvoicesDetails />} />
           <Route path="*" element={<Home />} />
         </Routes>
