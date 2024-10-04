@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MainLayout,
   TextTypo,
@@ -9,361 +9,208 @@ import {
   TextBtn,
   NavTabs,
 } from "../../components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { RxCross1 } from "react-icons/rx";
+import ContactPersons from "./ContactPersons";
+import OtherDetails from "./OtherDetails";
+import Address from "./Address";
+import { ToastContainer, toast } from "react-toastify";
+import { addEntity } from "../../actions/EntityActions";
+import { useActions } from "../../app/use-Actions";
+import { useSelector } from "react-redux";
+import { selectEntity } from "../../selectors/EntitySelector";
 
 const NewCustomer = () => {
-  const [textValue, setTextValue] = useState("");
-  const [dropdownValue, setDropdownValue] = useState("");
-  const [checkboxValue, setCheckboxValue] = useState(false);
-  const [fileValue, setFileValue] = useState(null);
-  const [isOpenAdd, setIsOpenAdd] = useState(false);
-  const dropdownOptions = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [customerType, setCustomerType] = useState("");
+  const [salutation, setSalutation] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [billingAddress, setBillingAddress] = useState({});
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [contacts, setContacts] = useState([]);
+  const [otherDetails, setOtherDetails] = useState({
+    pan: "",
+    openingBalance: "",
+    currency: "",
+    paymentTerms: "",
+    portalAccess: false,
+    portalLanguage: "",
+    file: null,
+  });
+  const [shippingSameAsBilling, setShippingSameAsBilling] = useState(false);
+
+  const { customer } = useSelector(selectEntity);
+
+  const customerTypeOptions = [
+    { value: "individual", label: "Individual" },
+    { value: "company", label: "Company" },
   ];
 
-  const handleFileChange = (e) => {
-    console.log(fileValue)
-    setFileValue(e.target.files[0]);
+  const salutationOptions = [
+    { value: "mr", label: "Mr." },
+    { value: "ms", label: "Ms." },
+    { value: "mrs", label: "Mrs." },
+  ];
+
+  const actions = useActions({
+    addEntity,
+  });
+
+  useEffect(() => {
+    if (id && customer?.data?.data?.length > 0) {
+      const existingCustomer = customer.data.data.find(
+        (item) => item.id === id
+      );
+      if (existingCustomer) {
+        setCustomerType(existingCustomer.customerType);
+        setSalutation(existingCustomer.primaryContact?.salutation || "");
+        setFirstName(existingCustomer.primaryContact?.firstName || "");
+        setLastName(existingCustomer.primaryContact?.lastName || "");
+        setCompanyName(existingCustomer.primaryContact?.companyName || "");
+        setDisplayName(existingCustomer.primaryContact?.displayName || "");
+        setEmail(existingCustomer.primaryContact?.email || "");
+        setPhone(existingCustomer.primaryContact?.phone || "");
+        setBillingAddress(existingCustomer.billingAddress || {});
+        setShippingAddress(existingCustomer.shippingAddress || {});
+        setContacts(existingCustomer.contactPersons || []);
+        setOtherDetails(existingCustomer.otherDetails || {});
+        setShippingSameAsBilling(
+          existingCustomer.shippingSameAsBilling || false
+        );
+      }
+    }
+  }, [id, customer]);
+
+  const handleSave = async () => {
+    const customerData = {
+      customerType,
+      primaryContact: {
+        salutation,
+        firstName,
+        lastName,
+        companyName,
+        displayName,
+        email,
+        phone,
+      },
+      otherDetails: otherDetails,
+      billingAddress: billingAddress,
+      shippingAddress: shippingAddress ? shippingAddress : billingAddress,
+      contactPersons: contacts,
+    };
+
+    if (id) {
+      customerData.id = id;
+    }
+
+    try {
+      await actions.addEntity(customerData, "customer");
+      toast.success(id ? "Updated successfully!" : "Saved successfully!");
+      setTimeout(() => navigate(-1), 1000);
+    } catch (error) {
+      toast.error("Failed to save invoice!");
+      console.error("Error saving invoice:", error);
+    }
   };
 
-  const OtherDetails = () => {
-    return (
-      <Container>
-        <FlexContainer>
-          <CustomInput
-            type="text"
-            label="PAN"
-            value={textValue}
-            placeholder="Enter PAN number"
-            onChange={(e) => setTextValue(e.target.value)}
-            width="50%"
-            required={true}
-          />
-          <CustomInput
-            type="text"
-            label="Opening Balance"
-            value={textValue}
-            placeholder="Enter opening balance"
-            onChange={(e) => setTextValue(e.target.value)}
-            width="50%"
-          />
-        </FlexContainer>
-        <FlexContainer>
-          <CustomInput
-            type="dropdown"
-            label="Currency"
-            value={dropdownValue}
-            defaultOption="INR - Indian Rupees"
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            width="50%"
-          />
-          <CustomInput
-            type="dropdown"
-            label="Payment Terms"
-            value={dropdownValue}
-            defaultOption="Due on Receipt"
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            width="50%"
-          />
-        </FlexContainer>
-        <FlexContainer justify="flex-start" align="center">
-          <CustomInput
-            type="checkbox"
-            value={checkboxValue}
-            label="Allow portal access for this customer"
-            onChange={(e) => setCheckboxValue(e.target.checked)}
-          />
-        </FlexContainer>
-        <FlexContainer>
-          <CustomInput
-            type="dropdown"
-            label="Portal Language"
-            value={dropdownValue}
-            defaultOption="English"
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            width="50%"
-          />
-          <CustomInput
-            type="file"
-            label="File Upload"
-            variant="dashedBox"
-            onChange={handleFileChange}
-            width="50%"
-          />
-        </FlexContainer>
-      </Container>
-    );
+  const handleOtherDetailsChange = (field, value) => {
+    setOtherDetails((prev) => ({ ...prev, [field]: value }));
   };
 
-  const Address = () => {
-    return (
-      <FlexContainer>
-        <FlexContainer
-          direction="column"
-          width="100%"
-          margin="0px 50px 0px 0px"
-        >
-          <TextTypo text="Billing Address" fontSize="18px" fontWeight="600" />
-          <CustomInput
-            type="text"
-            margin="0px"
-            label="Attention"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          <CustomInput
-            type="dropdown"
-            label="Country / Region"
-            value={dropdownValue}
-            defaultOption=" "
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            margin="0px"
-          />
-          <CustomInput
-            type="textarea"
-            label="Address"
-            value={textValue}
-            margin="0px"
-            placeholder="Street 1"
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          <CustomInput
-            type="textarea"
-            value={textValue}
-            placeholder="Street 2"
-            margin="0px"
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          <CustomInput
-            type="dropdown"
-            label="State"
-            value={dropdownValue}
-            defaultOption="Select state"
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            margin="0px"
-          />
-          <CustomInput
-            type="dropdown"
-            label="City"
-            value={dropdownValue}
-            defaultOption="Select city "
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            margin="0px"
-          />
-          <CustomInput
-            type="text"
-            margin="0px"
-            label="Phone Number"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-        </FlexContainer>
-        <FlexContainer direction="column" width="100%">
-          <TextTypo text="Shipping Address" fontSize="18px" fontWeight="600" />
-          <CustomInput
-            type="checkbox"
-            value={checkboxValue}
-            label="Same as Billing Address"
-            margin="0px"
-            onChange={(e) => setCheckboxValue(e.target.checked)}
-          />
-          <CustomInput
-            type="text"
-            margin="0px"
-            label="Attention"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          <CustomInput
-            type="dropdown"
-            label="Country / Region"
-            value={dropdownValue}
-            defaultOption=" "
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            margin="0px"
-          />
-          <CustomInput
-            type="textarea"
-            label="Address"
-            value={textValue}
-            margin="0px"
-            placeholder="Street 1"
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          <CustomInput
-            type="textarea"
-            value={textValue}
-            placeholder="Street 2"
-            margin="0px"
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          <CustomInput
-            type="dropdown"
-            label="State"
-            value={dropdownValue}
-            defaultOption="Select state"
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            margin="0px"
-          />
-          <CustomInput
-            type="dropdown"
-            label="City"
-            value={dropdownValue}
-            defaultOption="Select city "
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
-            margin="0px"
-          />
-          <CustomInput
-            type="text"
-            margin="0px"
-            label="Phone Number"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-        </FlexContainer>
-      </FlexContainer>
-    );
+  const handleBillingAddressChange = (address) => {
+    setBillingAddress(address);
   };
 
-  const ContactPersons = () => {
-    return (
-      <Container>
-        <Container
-          width="60%"
-          bgColor="#F8F8F8"
-          padding="20px"
-          margin="20px 0px"
-        >
-          <FlexContainer>
-            <FlexContainer direction="column">
-              <TextTypo text="Sweatha" fontWeight="600" fontSize="18px" />
-              <TextTypo text="07 Jan 2024" fontWeight="400" fontSize="14px" />
-            </FlexContainer>
-            <FlexContainer direction="column">
-              <TextTypo
-                text="9084678678"
-                fontWeight="600"
-                fontSize="18px"
-                textAlign="right"
-              />
-              <TextTypo
-                text="neethu@gmail.com"
-                fontWeight="400"
-                fontSize="14px"
-                textAlign="right"
-              />
-            </FlexContainer>
-          </FlexContainer>
-        </Container>
-        <TextBtn
-          text="+ Add Contact Person"
-          fontColor="#0076BE"
-          padding="0px"
-          onClick={() => setIsOpenAdd(!isOpenAdd)}
-        />
-        {isOpenAdd && (
-          <Container>
-            <FlexContainer>
-              <CustomInput
-                type="text"
-                label="Name"
-                value={textValue}
-                placeholder="Enter contact person name"
-                onChange={(e) => setTextValue(e.target.value)}
-                width="30%"
-                required={true}
-              />
-              <CustomInput
-                type="text"
-                label="Number"
-                value={textValue}
-                placeholder="Enter customer display name"
-                onChange={(e) => setTextValue(e.target.value)}
-                width="30%"
-                required={true}
-              />
-              <CustomInput
-                type="text"
-                label="Email"
-                value={textValue}
-                placeholder="Enter contact person mail"
-                onChange={(e) => setTextValue(e.target.value)}
-                width="30%"
-                required={true}
-              />
-            </FlexContainer>
-            <FilledBtn text="Add" />
-          </Container>
-        )}
-      </Container>
-    );
+  const handleShippingAddressChange = (address) => {
+    setShippingAddress(address);
   };
 
   const tabs = [
     {
       key: "tab1",
       label: "Other Details",
-      content: <OtherDetails />,
+      content: (
+        <OtherDetails
+          initialData={otherDetails}
+          onChange={handleOtherDetailsChange}
+        />
+      ),
     },
     {
       key: "tab2",
       label: "Address",
-      content: <Address />,
+      content: (
+        <Address
+          billingAddress={billingAddress}
+          shippingAddress={shippingAddress}
+          onBillingAddressChange={handleBillingAddressChange}
+          onShippingAddressChange={handleShippingAddressChange}
+          shippingSameAsBilling={shippingSameAsBilling}
+          setShippingSameAsBilling={setShippingSameAsBilling}
+        />
+      ),
     },
     {
       key: "tab3",
       label: "Contact Persons",
-      content: <ContactPersons />,
+      content: <ContactPersons contacts={contacts} setContacts={setContacts} />,
     },
   ];
 
   return (
     <MainLayout>
-      <TextTypo text="New Customer" fontSize="30px" fontWeight="400" />
+      <FlexContainer>
+        <TextTypo
+          text={id ? "Edit Customer" : "New Customer"}
+          fontSize="30px"
+          fontWeight="400"
+        />
+        <RxCross1
+          color="red"
+          size={30}
+          onClick={() => navigate(-1)}
+          style={{ cursor: "pointer" }}
+        />
+      </FlexContainer>
       <Container margin="30px 0px">
         <CustomInput
           label="Customer Type"
           type="dropdown"
           defaultOption="Select customer type"
-          value={dropdownValue}
-          onChange={(e) => setDropdownValue(e.target.value)}
-          options={dropdownOptions}
+          value={customerType}
+          onChange={(e) => setCustomerType(e.target.value)}
+          options={customerTypeOptions}
           required={true}
         />
         <TextTypo text="Primary Contact" fontWeight="600" />
         <FlexContainer justify="">
           <CustomInput
             type="dropdown"
-            value={dropdownValue}
-            defaultOption="Saluation"
-            onChange={(e) => setDropdownValue(e.target.value)}
-            options={dropdownOptions}
+            value={salutation}
+            defaultOption="Salutation"
+            onChange={(e) => setSalutation(e.target.value)}
+            options={salutationOptions}
             width="20%"
             required={true}
           />
           <CustomInput
             type="text"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             placeholder="First Name"
             width="28%"
             required={true}
           />
           <CustomInput
             type="text"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             placeholder="Last Name"
             width="28%"
             required={true}
@@ -373,37 +220,37 @@ const NewCustomer = () => {
           <CustomInput
             type="text"
             label="Company Name"
-            value={textValue}
+            value={companyName}
             placeholder="Enter company name"
-            onChange={(e) => setTextValue(e.target.value)}
+            onChange={(e) => setCompanyName(e.target.value)}
             width="50%"
           />
           <CustomInput
             type="text"
             label="Customer display name"
-            value={textValue}
+            value={displayName}
             placeholder="Enter customer display name"
-            onChange={(e) => setTextValue(e.target.value)}
+            onChange={(e) => setDisplayName(e.target.value)}
             width="50%"
             required={true}
           />
         </FlexContainer>
         <FlexContainer>
           <CustomInput
-            type="text"
+            type="email"
             label="Customer Email"
-            value={textValue}
+            value={email}
             placeholder="Enter customer email"
-            onChange={(e) => setTextValue(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             width="50%"
             required={true}
           />
           <CustomInput
-            type="text"
+            type="number"
             label="Customer Phone"
-            value={textValue}
+            value={phone}
             placeholder="Enter customer phone"
-            onChange={(e) => setTextValue(e.target.value)}
+            onChange={(e) => setPhone(e.target.value)}
             width="50%"
             required={true}
           />
@@ -416,9 +263,15 @@ const NewCustomer = () => {
           <NavLink to="/Sales/Customers">
             <TextBtn text="Cancel" />
           </NavLink>
-          <FilledBtn text="Save" bgColor="#0076BE" fontColor="white" />
+          <FilledBtn
+            text={id ? "Update" : "Save"}
+            bgColor="#0076BE"
+            fontColor="white"
+            onClick={handleSave}
+          />
         </FlexContainer>
       </Container>
+      <ToastContainer />
     </MainLayout>
   );
 };
