@@ -163,7 +163,11 @@ const NewInvoice = () => {
   return (
     <MainLayout>
       <FlexContainer>
-        <TextTypo text={id ? "Edit Invoice" : "New Invoice"} fontSize="30px" fontWeight="400" />
+        <TextTypo
+          text={id ? "Edit Invoice" : "New Invoice"}
+          fontSize="30px"
+          fontWeight="400"
+        />
         <RxCross1
           color="red"
           size={30}
@@ -353,9 +357,7 @@ const NewInvoice = () => {
         />
 
         <FlexContainer justify="flex-end" margin="30px 0px">
-          <NavLink to="/Sales/Invoices">
-            <TextBtn text="Cancel" />
-          </NavLink>
+          <TextBtn text="Cancel" onClick={() => navigate(-1)} />
           <OutlinedBtn text="Save as Draft" />
           <FilledBtn
             text={id ? "Update" : "Save"}

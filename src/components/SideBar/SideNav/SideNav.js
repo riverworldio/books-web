@@ -22,7 +22,7 @@ const SideNav = () => {
   return (
     <div className={`sideNav-container ${isCollapsed ? "collapsed" : ""}`}>
       <div className="top-container-sideNav">
-        <NavLink to="/">
+        <NavLink to="/dashboard">
           <h6 className="sideNav-logo">FinBooks</h6>
         </NavLink>
         {isCollapsed ? (
