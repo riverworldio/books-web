@@ -22,10 +22,15 @@ const Address = ({
   shippingSameAsBilling,
   setShippingSameAsBilling,
 }) => {
-  const [states, setStates] = useState([]);
+  const [billingStates, setBillingStates] = useState([]);
+  const [shippingStates, setShippingStates] = useState([]);
 
   useEffect(() => {
     onBillingAddressChange(billingAddress);
+
+    if (billingAddress.country) {
+      setBillingStates(countryStateMap[billingAddress.country] || []);
+    }
   }, [billingAddress, onBillingAddressChange]);
 
   useEffect(() => {
@@ -33,6 +38,10 @@ const Address = ({
       onShippingAddressChange(billingAddress);
     } else {
       onShippingAddressChange(shippingAddress);
+
+      if (shippingAddress.country) {
+        setShippingStates(countryStateMap[shippingAddress.country] || []);
+      }
     }
   }, [
     shippingSameAsBilling,
@@ -44,7 +53,7 @@ const Address = ({
   const handleBillingChange = (field, value) => {
     onBillingAddressChange({ ...billingAddress, [field]: value });
     if (field === "country") {
-      setStates(countryStateMap[value] || []);
+      setBillingStates(countryStateMap[value] || []);
       onBillingAddressChange({ ...billingAddress, state: "", city: "" });
     }
   };
@@ -52,7 +61,7 @@ const Address = ({
   const handleShippingChange = (field, value) => {
     onShippingAddressChange({ ...shippingAddress, [field]: value });
     if (field === "country") {
-      setStates(countryStateMap[value] || []);
+      setShippingStates(countryStateMap[value] || []);
       onShippingAddressChange({ ...shippingAddress, state: "", city: "" });
     }
   };
@@ -101,7 +110,7 @@ const Address = ({
           value={billingAddress.state}
           defaultOption="Select state"
           onChange={(e) => handleBillingChange("state", e.target.value)}
-          options={states}
+          options={billingStates}
           margin="0px"
         />
         <CustomInput
@@ -182,7 +191,7 @@ const Address = ({
               value={shippingAddress.state}
               defaultOption="Select state"
               onChange={(e) => handleShippingChange("state", e.target.value)}
-              options={states}
+              options={shippingStates}
               margin="0px"
             />
             <CustomInput

@@ -14,6 +14,9 @@ import NewInvoice from "./pages/Invoice/NewInvoice.js";
 import NewCustomer from "./pages/Customer/NewCustomer.js";
 import InvoicesDetails from "./pages/Invoice/InvoicesDetails.js";
 import ProfitAndLoss from "./pages/Reports/ProfitAndLoss.js";
+import BillsList from "./pages/Bills/BillsList.js";
+import NewBills from "./pages/Bills/NewBills.js";
+import BillsDetails from "./pages/Bills/BillsDetails.js";
 
 function App() {
   return (
@@ -33,6 +36,10 @@ function App() {
           <Route path="/newCustomer" element={<NewCustomer />} />
           <Route path="/editCustomer/:id" element={<NewCustomer />} />
           <Route path="/Invoices/:id" element={<InvoicesDetails />} />
+          <Route path="/purchases/bills" element={<BillsList />} />
+          <Route path="/newBill" element={<NewBills />} />
+          <Route path="/editBill/:id" element={<NewBills />} />
+          <Route path="/bills/:id" element={<BillsDetails />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </Router>
