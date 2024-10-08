@@ -1,4 +1,5 @@
 export { default as BorderStyled } from "./Border/BorderStyled";
+export { default as BillsTable } from "./BillsTable/BillsTable";
 export { default as FilledBtn } from "./Buttons/FilledBtn/FilledBtn";
 export { default as OutlinedBtn } from "./Buttons/OutlinedBtn/OutlinedBtn";
 export { default as TextBtn } from "./Buttons/TextBtn/TextBtn";

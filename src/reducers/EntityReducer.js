@@ -15,6 +15,13 @@ const initialState = {
       isFailed: false,
       data: [],
     },
+    bill: {
+      isLoading: false,
+      isFullfilled: false,
+      isAddCompleted: false,
+      isFailed: false,
+      data: [],
+    },
   },
 };
 
