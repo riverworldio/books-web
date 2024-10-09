@@ -8,6 +8,7 @@ export { default as CustomInput } from "./CustomInput/CustomInput";
 export { default as CustomerTable } from "./CustomerTable/CustomerTable";
 export { default as FlexContainer } from "./Flexbox/FlexContainer";
 export { default as ImageContainer } from "./ImageContainer/ImageContainer";
+export { default as ItemsTable } from "./ItemsTable/ItemsTable";
 export { default as InvoiceTable } from "./InvoiceTable/InvoiceTable";
 export { default as MainLayout } from "./Layouts/MainLayout/MainLayout";
 export { default as NavButton } from "./NavButton/NavButton";

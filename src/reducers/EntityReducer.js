@@ -22,6 +22,13 @@ const initialState = {
       isFailed: false,
       data: [],
     },
+    items: {
+      isLoading: false,
+      isFullfilled: false,
+      isAddCompleted: false,
+      isFailed: false,
+      data: [],
+    },
   },
 };
 
