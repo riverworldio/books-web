@@ -5,7 +5,11 @@ import {
   FlexContainer,
   TextBtn,
   FilledBtn,
+  ItemsTable,
+  Container,
+  SearchInput,
 } from "../../components";
+import { NavLink } from "react-router-dom";
 
 const Items = () => {
   return (
@@ -18,16 +22,22 @@ const Items = () => {
             fontSize="13px"
             fontColor="#0076BE"
           />
-          <FilledBtn
-            text="Add new"
-            fontSize="13px"
-            fontColor="white"
-            bgColor="#6EA152"
-          />
+          <NavLink to="/newItem">
+            <FilledBtn
+              text="Add new"
+              fontSize="13px"
+              fontColor="white"
+              bgColor="#6EA152"
+            />
+          </NavLink>
           <FilledBtn text="Import" fontSize="13px" />
           <FilledBtn text="Export" fontSize="13px" />
         </FlexContainer>
       </FlexContainer>
+      <Container margin="20px 0px">
+      <SearchInput className="my-3" />
+        <ItemsTable />
+      </Container>
     </MainLayout>
   );
 };

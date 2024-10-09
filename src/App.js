@@ -17,6 +17,7 @@ import ProfitAndLoss from "./pages/Reports/ProfitAndLoss.js";
 import BillsList from "./pages/Bills/BillsList.js";
 import NewBills from "./pages/Bills/NewBills.js";
 import BillsDetails from "./pages/Bills/BillsDetails.js";
+import NewItem from "./pages/Items/NewItem.js";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
           <Route path="/Sales/Invoices" element={<InvoiceMain />} />
           <Route path="/Sales/Customers" element={<Customer />} />
           <Route path="/Items" element={<Items />} />
+          <Route path="/newItem" element={<NewItem />} />
+          <Route path="/editItem/:id" element={<NewItem />} />
           <Route path="/Reports" element={<Reports />} />
           <Route path="/ProfitAndLoss" element={<ProfitAndLoss />} />
           <Route path="/newCustomer" element={<NewCustomer />} />
