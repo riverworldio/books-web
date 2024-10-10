@@ -33,7 +33,7 @@ const Invoice = () => {
           <FilledBtn text="Export" fontSize="13px" />
         </FlexContainer>
       </FlexContainer>
-      <FlexContainer justify="space-around" margin="50px 0px">
+      {/* <FlexContainer justify="space-around" margin="50px 0px">
         <FlexContainer direction="column">
           <TextTypo text="Rs.150" fontSize="27px" fontWeight="600" />
           <TextTypo text="OverDue" fontSize="13px" textAlign="center" />
@@ -46,7 +46,7 @@ const Invoice = () => {
           <TextTypo text="Rs.20" fontSize="27px" fontWeight="600" />
           <TextTypo text="In Draft" fontSize="13px" textAlign="center" />
         </FlexContainer>
-      </FlexContainer>
+      </FlexContainer> */}
       <SearchInput />
       <InvoiceTable />
     </MainLayout>

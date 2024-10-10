@@ -74,6 +74,7 @@ export default function InvoiceTable() {
   const { invoice } = useSelector(selectEntity);
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null); // To track the expanded row
   const size = 10;
   const totalPages = Math.ceil((invoice?.data?.total || 0) / size);
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,76 +117,153 @@ export default function InvoiceTable() {
     setOpen(true);
   };
 
+  const handleRowClick = (id) => {
+    setExpandedRow(id === expandedRow ? null : id);
+  };
+ 
   return (
-    <Container>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell sx={styleCell}>Due Date</TableCell>
-              <TableCell sx={styleCell}>Invoice Date</TableCell>
-              <TableCell sx={styleCell}>Order Num.</TableCell>
-              <TableCell sx={styleCell}>Name</TableCell>
-              <TableCell sx={styleCell}>Customer ID</TableCell>
-              <TableCell sx={styleCell}>Amount</TableCell>
-              <TableCell sx={styleCell} align="center">
-                Status
-              </TableCell>
-              <TableCell sx={styleCell}></TableCell>
-              <TableCell sx={styleCell}></TableCell>
-              <TableCell sx={styleCell}></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {invoice?.data?.data?.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" sx={styleRow}>
-                  {row.dueDate}
-                </TableCell>
-                <TableCell sx={styleRow}>{row.invoiceDate}</TableCell>
-                <TableCell sx={styleRow}>{row.orderNumber}</TableCell>
-                <TableCell sx={styleRow}>{row.customerName}</TableCell>
-                <TableCell sx={styleRow}>{row.invoiceNumber || 0}</TableCell>
-                <TableCell sx={styleRow}>{row.total || "$0.00"}</TableCell>
-                <TableCell sx={styleRow} align="center">
-                  {getStatusColor(row.status || "unknown")}
-                </TableCell>
-                <TableCell sx={styleRow}>
-                  <NavLink to={`/Invoices/${row.id}`}>
-                    <FilledBtn
-                      text="View"
-                      padding="3px 13px"
-                      fontSize="14px"
-                      fontColor="white"
-                      bgColor="black"
-                    />
-                  </NavLink>
-                </TableCell>
-                <TableCell sx={styleRow}>
-                  <NavLink to={`/editInvoice/${row.id}`}>
-                    <LuPenLine />
-                  </NavLink>
-                </TableCell>
-                <TableCell sx={styleRow}>
-                  <FaRegTrashAlt
-                    onClick={() => handleOpenDeleteDialog(row.id)}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ConfirmationDialog
-        isDelete={true}
-        open={open}
-        handleClose={handleTrashClose}
-        handleAgree={handleDeleteEntities}
-        message="This cannot be undone and the item gets deleted permanently."
-      />
+    <div>
+      <div style={{ display: "flex",justifyContent:"space-around", gap: "20px" }}>
+        <div style={{ flex: expandedRow ? "1" : "2" }}>
+          <TableContainer
+            component={Paper}
+            sx={{
+              maxWidth: expandedRow === null ? 1000 : 150,
+            }}
+          >
+            <Table
+              sx={{
+                maxWidth: expandedRow === null ? "" : 150,
+                minWidth: expandedRow === null ? 650 : 150,
+                transition: "min-width 0.3s ease",
+              }}
+              aria-label="simple table"
+            >
+              <TableHead>
+                <TableRow>
+                  {expandedRow !== null && (
+                    <TableCell sx={styleCell}>Details</TableCell>
+                  )}
+                  {expandedRow === null && (
+                    <>
+                      <TableCell sx={styleCell}>Due Date</TableCell>
+                      <TableCell sx={styleCell}>Invoice Date</TableCell>
+                      <TableCell sx={styleCell}>Order Num.</TableCell>
+                      <TableCell sx={styleCell}>Name</TableCell>
+                      <TableCell sx={styleCell}>Customer ID</TableCell>
+                      <TableCell sx={styleCell}>Amount</TableCell>
+                      <TableCell sx={styleCell} align="center">
+                        Status
+                      </TableCell>
+                      <TableCell sx={styleCell}></TableCell>
+                      <TableCell sx={styleCell}></TableCell>
+                      <TableCell sx={styleCell}></TableCell>
+                    </>
+                  )}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {invoice?.data?.data?.map((row) => (
+                  <React.Fragment key={row.id}>
+                    <TableRow
+                      onClick={() => handleRowClick(row.id)} // Click to expand
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      {expandedRow !== null && (
+                        <TableCell component="th" scope="row" sx={styleRow}>
+                          <div>
+                            <strong>Due Date:</strong> {row.dueDate} <br />
+                            <strong>Invoice Date:</strong> {row.invoiceDate}{" "}
+                            <br />
+                            <strong>Order Num:</strong> {row.orderNumber} <br />
+                            <strong>Customer Name:</strong> {row.customerName}{" "}
+                            <br />
+                            <strong>Customer ID:</strong>{" "}
+                            {row.invoiceNumber || 0} <br />
+                            <strong>Total Amount:</strong>{" "}
+                            {row.total || "$0.00"} <br />
+                          </div>
+                        </TableCell>
+                      )}
+                      {expandedRow === null && (
+                        <>
+                          <TableCell component="th" scope="row" sx={styleRow}>
+                            {row.dueDate}
+                          </TableCell>
+                          <TableCell sx={styleRow}>{row.invoiceDate}</TableCell>
+                          <TableCell sx={styleRow}>{row.orderNumber}</TableCell>
+                          <TableCell sx={styleRow}>
+                            {row.customerName}
+                          </TableCell>
+                          <TableCell sx={styleRow}>
+                            {row.invoiceNumber || 0}
+                          </TableCell>
+                          <TableCell sx={styleRow}>
+                            {row.total || "$0.00"}
+                          </TableCell>
+                          <TableCell sx={styleRow} align="center">
+                            {getStatusColor(row.status || "unknown")}
+                          </TableCell>
+                          <TableCell sx={styleRow}>
+                            <NavLink to={`/Invoices/${row.id}`}>
+                              <FilledBtn
+                                text="View"
+                                padding="3px 13px"
+                                fontSize="14px"
+                                fontColor="white"
+                                bgColor="black"
+                              />
+                            </NavLink>
+                          </TableCell>
+                          <TableCell sx={styleRow}>
+                            <NavLink to={`/editInvoice/${row.id}`}>
+                              <LuPenLine />
+                            </NavLink>
+                          </TableCell>
+                          <TableCell sx={styleRow}>
+                            <FaRegTrashAlt
+                              onClick={() => handleOpenDeleteDialog(row.id)}
+                            />
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        {expandedRow && (
+          <div
+            style={{ flex: "1",flexGrow :"1", padding: "20px", backgroundColor: "#f5f5f5" }}
+          >
+            <h3>Additional Details</h3>
+            <p>
+              Details for customer:{" "}
+              {
+                invoice?.data?.data?.find((row) => row.id === expandedRow)
+                  ?.customerName
+              }
+            </p>
+            <p>
+              Amount:{" "}
+              {
+                invoice?.data?.data?.find((row) => row.id === expandedRow)
+                  ?.total
+              }
+            </p>
+            <p>
+              Status:{" "}
+              {
+                invoice?.data?.data?.find((row) => row.id === expandedRow)
+                  ?.status
+              }
+            </p>
+            <button onClick={() => setExpandedRow(null)}>Close</button>
+          </div>
+        )}
+      </div>
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
@@ -195,6 +273,6 @@ export default function InvoiceTable() {
         totalEntries={invoice?.data?.total}
         entriesPerPage={size}
       />
-    </Container>
+    </div>
   );
 }
