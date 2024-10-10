@@ -9,7 +9,7 @@ import Invoice from "./pages/Invoice/Invoice.js";
 import Customer from "./pages/Customer/Customer.js";
 import Items from "./pages/Items/Items.js";
 import Reports from "./pages/Reports/Reports.js";
-import InvoiceMain from "./pages/Invoice/InvoiceMain.js";
+// import InvoiceMain from "./pages/Invoice/InvoiceMain.js";
 import NewInvoice from "./pages/Invoice/NewInvoice.js";
 import NewCustomer from "./pages/Customer/NewCustomer.js";
 import InvoicesDetails from "./pages/Invoice/InvoicesDetails.js";
@@ -38,7 +38,7 @@ function App() {
             <Route path="/viewInvoices" element={<Invoice />} />
             <Route path="/newInvoice" element={<NewInvoice />} />
             <Route path="/editInvoice/:id" element={<NewInvoice />} />
-            <Route path="/Sales/Invoices" element={<InvoiceMain />} />
+            <Route path="/Sales/Invoices" element={<Invoice />} />
             <Route path="/Sales/Customers" element={<Customer />} />
             <Route path="/Items" element={<Items />} />
             <Route path="/newItem" element={<NewItem />} />

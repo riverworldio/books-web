@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowRight, MdKeyboardArrowDown } from "react-icons/md";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -6,12 +6,17 @@ const NavButton = ({ icon, label, dropdownItems }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  // Check if any dropdown item is active to highlight the parent button
   const isActiveDropdown = dropdownItems
     ? dropdownItems.some((item) =>
         location.pathname.includes(`${label.toLowerCase()}/${item.toLowerCase()}`)
       )
     : false;
+
+  useEffect(() => {
+    if (isActiveDropdown) {
+      setIsOpen(true); 
+    }
+  }, [isActiveDropdown]);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -47,6 +52,7 @@ const NavButton = ({ icon, label, dropdownItems }) => {
               key={index}
               to={`/${label.toLowerCase()}/${item.toLowerCase()}`}
               className={({ isActive }) => (isActive ? "active dropdown-item" : "dropdown-item")}
+              onClick={(e) => e.stopPropagation()}
             >
               <li>{item}</li>
             </NavLink>
