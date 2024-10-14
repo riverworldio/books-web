@@ -123,17 +123,13 @@ export default function InvoiceTable() {
  
   return (
     <div>
-      <div style={{ display: "flex",justifyContent:"space-around", gap: "20px" }}>
+      <div style={{ display: "flex", gap: "20px" }}>
         <div style={{ flex: expandedRow ? "1" : "2" }}>
           <TableContainer
             component={Paper}
-            sx={{
-              maxWidth: expandedRow === null ? 1000 : 150,
-            }}
           >
             <Table
               sx={{
-                maxWidth: expandedRow === null ? "" : 150,
                 minWidth: expandedRow === null ? 650 : 150,
                 transition: "min-width 0.3s ease",
               }}
@@ -236,7 +232,7 @@ export default function InvoiceTable() {
         </div>
         {expandedRow && (
           <div
-            style={{ flex: "1",flexGrow :"1", padding: "20px", backgroundColor: "#f5f5f5" }}
+            style={{ flex: "1", padding: "20px", backgroundColor: "#f5f5f5" }}
           >
             <h3>Additional Details</h3>
             <p>
